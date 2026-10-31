@@ -1,81 +1,128 @@
+/* --- Importar Fuente Moderna --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
-:root {
-    --color-fondo: #e6f4f1;
-    --color-primario: #009688;
-    --color-secundario: #00796b;
-    --color-texto: #333;
-    --color-blanco: #ffffff;
-    --sombra: 0 4px 8px rgba(0, 0, 0, 0.1);
-    --radio: 12px;
-}
-
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: var(--color-fondo);
+/* --- Reset y Fondo de Pantalla --- */
+* {
     margin: 0;
-    padding: 30px;
-    color: var(--color-texto);
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h1, h2 {
-    color: var(--color-primario);
+html {
+    background-color: #f4f9f9; /* Fondo de la pantalla general */
+}
+
+/* --- Truco: Convertir el Body en la Tarjeta Principal --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: #ffffff;
+    max-width: 850px; /* Ancho máximo de la tarjeta */
+    margin: 40px auto; /* Centrado en la pantalla */
+    padding: 40px;
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Sombra elegante */
+}
+
+/* --- Títulos --- */
+h1 {
+    color: #0077b6;
+    font-size: 24px;
+    border-bottom: 3px solid #00B4D8;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    color: #2a9d8f; /* Tono verde esmeralda para subtítulos */
+    margin: 35px 0 20px 0;
+    font-size: 20px;
+}
+
+/* --- Párrafos y Datos del Paciente --- */
+p {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+    color: #444;
+}
+
+p strong {
+    color: #0077b6;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+/* --- Contenedor del Odontograma --- */
+.odontograma-container {
+    background: #f8fbfa;
+    border: 2px dashed #00B4D8;
+    border-radius: 12px;
+    padding: 25px;
     text-align: center;
+    margin: 30px 0;
+}
+
+.odontograma-image {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
-/* Información general */
-p {
-    font-size: 16px;
-    line-height: 1.5;
-    margin: 8px 0;
+.upload-form {
+    margin-top: 20px;
 }
 
-/* Secciones con fondo blanco */
-form, .odontograma-container, .info-box {
-    background-color: var(--color-blanco);
-    border-radius: var(--radio);
-    padding: 20px;
-    margin: 20px auto;
-    box-shadow: var(--sombra);
-    max-width: 700px;
+/* Input File (Seleccionar archivo) */
+input[type="file"] {
+    display: block;
+    margin: 0 auto 15px auto;
+    font-size: 14px;
+    color: #555;
 }
 
-/* Campos de texto */
-textarea {
+/* --- Textareas (Antecedentes, Alergias, etc.) --- */
+form textarea {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: var(--radio);
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    font-family: inherit;
+    font-size: 14px;
+    color: #333;
+    transition: all 0.3s ease;
     resize: vertical;
-    font-size: 15px;
+    min-height: 100px;
 }
 
-/* Botones atractivos */
+form textarea:focus {
+    border-color: #00B4D8;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.15);
+}
+
+/* --- Botones Premium --- */
 button {
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #00B4D8 0%, #0096c7 100%);
+    color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: var(--radio);
+    border-radius: 25px; /* Forma de píldora */
+    font-size: 15px;
+    font-weight: 500;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 180, 216, 0.3);
+    transition: all 0.3s ease;
+    display: inline-block;
+    letter-spacing: 0.5px;
 }
 
 button:hover {
-    background-color: var(--color-secundario);
-}
-
-/* Imagen odontograma */
-.odontograma-image {
-    max-width: 100%;
-    border-radius: var(--radio);
-    margin-top: 15px;
-}
-
-/* Archivo de carga */
-.upload-form input[type="file"] {
-    margin-top: 10px;
+    background: linear-gradient(135deg, #0096c7 0%, #0077b6 100%);
+    box-shadow: 0 6px 15px rgba(0, 180, 216, 0.4);
+    transform: translateY(-2px);
 }

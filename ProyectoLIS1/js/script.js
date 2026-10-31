@@ -1,4 +1,11 @@
-// script.js
+// FUNCIÓN PARA AUTO-FORMATEAR EL TELÉFONO EN EL CRUD
+function formatearTelefono(input) {
+    let valor = input.value.replace(/\D/g, ''); // Borra todo lo que no sea número
+    if (valor.length > 4) {
+        valor = valor.substring(0, 4) + '-' + valor.substring(4, 8);
+    }
+    input.value = valor;
+}
 
 // PACIENTES
 const formularioPaciente = document.getElementById('formulario-paciente');
@@ -9,7 +16,7 @@ const eliminarPacienteBtn = document.getElementById('eliminar-paciente');
 const verExpedienteBtn = document.getElementById('ver-expediente');
 let pacientesTable = document.getElementById('pacientes-table');
 let pacienteSeleccionado = null;
-const cancelarFormularioPacienteBtn = document.getElementById('cancelar-formulario-paciente'); // Nuevo botón
+const cancelarFormularioPacienteBtn = document.getElementById('cancelar-formulario-paciente');
 
 // CITAS
 const formularioCita = document.getElementById('formulario-cita');
@@ -19,7 +26,7 @@ const editarCitaBtn = document.getElementById('editar-cita');
 const eliminarCitaBtn = document.getElementById('eliminar-cita');
 let citasTable = document.getElementById('citas-table');
 let citaSeleccionada = null;
-const cancelarFormularioCitaBtn = document.getElementById('cancelar-formulario-cita'); // Nuevo botón
+const cancelarFormularioCitaBtn = document.getElementById('cancelar-formulario-cita');
 
 // TRATAMIENTOS
 const formularioTratamiento = document.getElementById('formulario-tratamiento');
@@ -29,165 +36,224 @@ const editarTratamientoBtn = document.getElementById('editar-tratamiento');
 const eliminarTratamientoBtn = document.getElementById('eliminar-tratamiento');
 let tratamientosTable = document.getElementById('tratamientos-table');
 let tratamientoSeleccionado = null;
-const cancelarFormularioTratamientoBtn = document.getElementById('cancelar-formulario-tratamiento'); // Nuevo botón
+const cancelarFormularioTratamientoBtn = document.getElementById('cancelar-formulario-tratamiento');
 
+// ==================== PACIENTES ====================
 
-// PACIENTES
-
-// Mostrar formulario vacío al agregar paciente
-agregarPacienteBtn.addEventListener('click', () => {
-    formularioPaciente.style.display = 'block';
-    pacienteForm.reset();
-    document.getElementById('paciente-id').value = '';
-});
-
-// Mostrar datos del paciente al seleccionar para editar
-editarPacienteBtn.addEventListener('click', () => {
-    if (pacienteSeleccionado) {
+if(agregarPacienteBtn) {
+    agregarPacienteBtn.addEventListener('click', () => {
         formularioPaciente.style.display = 'block';
-        document.getElementById('paciente-id').value = pacienteSeleccionado.id;
-        pacienteForm.nombre.value = pacienteSeleccionado.nombre;
-        pacienteForm.apellido.value = pacienteSeleccionado.apellido;
-        pacienteForm.telefono.value = pacienteSeleccionado.telefono;
-        pacienteForm.correo.value = pacienteSeleccionado.correo;
-        pacienteForm.fecha_nacimiento.value = pacienteSeleccionado.fecha_nacimiento;
-    }
-});
+        pacienteForm.reset();
+        document.getElementById('paciente-id').value = '';
+        formularioPaciente.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+}
 
-// Ocultar formulario al hacer clic en cancelar
+if(editarPacienteBtn) {
+    editarPacienteBtn.addEventListener('click', () => {
+        if (pacienteSeleccionado) {
+            formularioPaciente.style.display = 'block';
+            document.getElementById('paciente-id').value = pacienteSeleccionado.id;
+            
+            // Asignación ultra-precisa a los inputs del formulario
+            document.querySelector('#paciente-form input[name="nombre"]').value = pacienteSeleccionado.nombre;
+            document.querySelector('#paciente-form input[name="apellido"]').value = pacienteSeleccionado.apellido;
+            document.querySelector('#paciente-form input[name="telefono"]').value = pacienteSeleccionado.telefono;
+            document.querySelector('#paciente-form input[name="correo"]').value = pacienteSeleccionado.correo;
+            
+            formularioPaciente.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            alert("Por favor, selecciona un paciente en la tabla primero.");
+        }
+    });
+}
+
 if (cancelarFormularioPacienteBtn) {
     cancelarFormularioPacienteBtn.addEventListener('click', () => {
         formularioPaciente.style.display = 'none';
     });
 }
 
-// Eliminar paciente
-eliminarPacienteBtn.addEventListener('click', () => {
-    if (pacienteSeleccionado) {
-        window.location.href = `crud.php?delete_id=${pacienteSeleccionado.id}&tipo=paciente`;
-    }
-});
+if(eliminarPacienteBtn) {
+    eliminarPacienteBtn.addEventListener('click', () => {
+        if (pacienteSeleccionado) {
+            if(confirm(`¿Estás seguro de eliminar al paciente ${pacienteSeleccionado.nombre}?`)) {
+                window.location.href = `crud.php?delete_id=${pacienteSeleccionado.id}&tipo=paciente`;
+            }
+        } else {
+            alert("Por favor, selecciona un paciente en la tabla para eliminar.");
+        }
+    });
+}
 
-// Ver expediente del paciente
-verExpedienteBtn.addEventListener('click', () => {
-    if (pacienteSeleccionado) {
-        window.location.href = `expediente.php?paciente_id=${pacienteSeleccionado.id}`;
-    }
-});
+if(verExpedienteBtn) {
+    verExpedienteBtn.addEventListener('click', () => {
+        if (pacienteSeleccionado) {
+            window.location.href = `expediente.php?paciente_id=${pacienteSeleccionado.id}`;
+        } else {
+            alert("Por favor, selecciona un paciente en la tabla para ver su expediente.");
+        }
+    });
+}
 
+if(pacientesTable) {
+    pacientesTable.addEventListener('click', (event) => {
+        if (event.target.tagName === 'TD') {
+            const row = event.target.parentNode;
+            const filas = pacientesTable.querySelectorAll('tbody tr');
+            filas.forEach(f => f.classList.remove('fila-seleccionada'));
+            row.classList.add('fila-seleccionada');
 
-// CITAS
+            const cells = row.getElementsByTagName('TD');
+            pacienteSeleccionado = {
+                id: cells[0].textContent.trim(),
+                nombre: cells[1].textContent.trim(),
+                apellido: cells[2].textContent.trim(),
+                telefono: cells[3].textContent.trim(),
+                correo: cells[4].textContent.trim()
+            };
+        }
+    });
+}
 
-// Mostrar formulario vacío al agregar cita
-agregarCitaBtn.addEventListener('click', () => {
-    formularioCita.style.display = 'block';
-    citaForm.reset();
-    document.getElementById('cita-id').value = '';
-});
+// ==================== CITAS ====================
 
-// Mostrar datos de la cita al seleccionar para editar
-editarCitaBtn.addEventListener('click', () => {
-    if (citaSeleccionada) {
+if(agregarCitaBtn) {
+    agregarCitaBtn.addEventListener('click', () => {
         formularioCita.style.display = 'block';
-        document.getElementById('cita-id').value = citaSeleccionada.id;
-        citaForm.paciente_id.value = citaSeleccionada.paciente_id;
-        citaForm.fecha.value = citaSeleccionada.fecha;
-        citaForm.hora.value = citaSeleccionada.hora;
-        citaForm.motivo.value = citaSeleccionada.motivo;
-        citaForm.estado.value = citaSeleccionada.estado;
-    }
-});
+        citaForm.reset();
+        document.getElementById('cita-id').value = '';
+        formularioCita.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+}
 
-// Ocultar formulario al hacer clic en cancelar
+if(editarCitaBtn) {
+    editarCitaBtn.addEventListener('click', () => {
+        if (citaSeleccionada) {
+            formularioCita.style.display = 'block';
+            document.getElementById('cita-id').value = citaSeleccionada.id;
+            
+            // Lógica inteligente para buscar el nombre en la lista desplegable y autoseleccionarlo
+            let selectPaciente = document.querySelector('#cita-form select[name="paciente_id"]');
+            for(let i = 0; i < selectPaciente.options.length; i++) {
+                if(selectPaciente.options[i].text === citaSeleccionada.paciente_nombre) {
+                    selectPaciente.selectedIndex = i;
+                    break;
+                }
+            }
+
+            document.querySelector('#cita-form input[name="fecha"]').value = citaSeleccionada.fecha;
+            document.querySelector('#cita-form input[name="hora"]').value = citaSeleccionada.hora;
+            document.querySelector('#cita-form textarea[name="motivo"]').value = citaSeleccionada.motivo;
+            document.querySelector('#cita-form select[name="estado"]').value = citaSeleccionada.estado;
+            
+            formularioCita.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            alert("Por favor, selecciona una cita en la tabla primero.");
+        }
+    });
+}
+
 if (cancelarFormularioCitaBtn) {
     cancelarFormularioCitaBtn.addEventListener('click', () => {
         formularioCita.style.display = 'none';
     });
 }
 
-// Eliminar cita
-eliminarCitaBtn.addEventListener('click', () => {
-    if (citaSeleccionada) {
-        window.location.href = `crud.php?delete_id=${citaSeleccionada.id}&tipo=cita`;
-    }
-});
+if(eliminarCitaBtn) {
+    eliminarCitaBtn.addEventListener('click', () => {
+        if (citaSeleccionada) {
+            if(confirm(`¿Estás seguro de eliminar esta cita?`)) {
+                window.location.href = `crud.php?delete_id=${citaSeleccionada.id}&tipo=cita`;
+            }
+        } else {
+            alert("Por favor, selecciona una cita en la tabla para eliminar.");
+        }
+    });
+}
 
-// Seleccionar paciente en la tabla
-pacientesTable.addEventListener('click', (event) => {
-    if (event.target.tagName === 'TD') {
-        const row = event.target.parentNode;
-        const cells = row.getElementsByTagName('TD');
-        pacienteSeleccionado = {
-            id: cells[0].textContent,
-            nombre: cells[1].textContent,
-            apellido: cells[2].textContent,
-            telefono: cells[3].textContent,
-            correo: cells[4].textContent,
-            fecha_nacimiento: cells[5].textContent
-        };
-    }
-});
+if(citasTable) {
+    citasTable.addEventListener('click', (event) => {
+        if (event.target.tagName === 'TD') {
+            const row = event.target.parentNode;
+            const filas = citasTable.querySelectorAll('tbody tr');
+            filas.forEach(f => f.classList.remove('fila-seleccionada'));
+            row.classList.add('fila-seleccionada');
 
-// Seleccionar cita en la tabla
-citasTable.addEventListener('click', (event) => {
-    if (event.target.tagName === 'TD') {
-        const row = event.target.parentNode;
-        const cells = row.getElementsByTagName('TD');
-        citaSeleccionada = {
-            id: cells[0].textContent,
-            paciente_id: cells[1].textContent,
-            fecha: cells[2].textContent,
-            hora: cells[3].textContent,
-            motivo: cells[4].textContent,
-            estado: cells[5].textContent
-        };
-    }
-});
+            const cells = row.getElementsByTagName('TD');
+            citaSeleccionada = {
+                id: cells[0].textContent.trim(),
+                paciente_nombre: cells[1].textContent.trim(),
+                fecha: cells[2].textContent.trim(),
+                hora: cells[3].textContent.trim(),
+                motivo: cells[4].textContent.trim(),
+                estado: cells[5].textContent.trim().toLowerCase() // Adaptado a minúsculas para igualar la opción
+            };
+        }
+    });
+}
 
-// TRATAMIENTOS
+// ==================== TRATAMIENTOS ====================
 
-// Mostrar formulario vacío al agregar tratamiento
-agregarTratamientoBtn.addEventListener('click', () => {
-    formularioTratamiento.style.display = 'block';
-    tratamientoForm.reset();
-    document.getElementById('tratamiento-id').value = '';
-});
-
-// Mostrar datos del tratamiento al seleccionar para editar
-editarTratamientoBtn.addEventListener('click', () => {
-    if (tratamientoSeleccionado) {
+if(agregarTratamientoBtn) {
+    agregarTratamientoBtn.addEventListener('click', () => {
         formularioTratamiento.style.display = 'block';
-        document.getElementById('tratamiento-id').value = tratamientoSeleccionado.id;
-        tratamientoForm.cita_id.value = tratamientoSeleccionado.cita_id;
-        tratamientoForm.nombre.value = tratamientoSeleccionado.nombre;
-        tratamientoForm.descripcion.value = tratamientoSeleccionado.descripcion;
-    }
-});
+        tratamientoForm.reset();
+        document.getElementById('tratamiento-id').value = '';
+        formularioTratamiento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+}
 
-// Ocultar formulario al hacer clic en cancelar
+if(editarTratamientoBtn) {
+    editarTratamientoBtn.addEventListener('click', () => {
+        if (tratamientoSeleccionado) {
+            formularioTratamiento.style.display = 'block';
+            document.getElementById('tratamiento-id').value = tratamientoSeleccionado.id;
+            
+            document.querySelector('#tratamiento-form select[name="cita_id"]').value = tratamientoSeleccionado.cita_id;
+            document.querySelector('#tratamiento-form input[name="nombre"]').value = tratamientoSeleccionado.nombre;
+            document.querySelector('#tratamiento-form textarea[name="descripcion"]').value = tratamientoSeleccionado.descripcion;
+            
+            formularioTratamiento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            alert("Por favor, selecciona un tratamiento en la tabla primero.");
+        }
+    });
+}
+
 if (cancelarFormularioTratamientoBtn) {
     cancelarFormularioTratamientoBtn.addEventListener('click', () => {
         formularioTratamiento.style.display = 'none';
     });
 }
 
-// Eliminar tratamiento
-eliminarTratamientoBtn.addEventListener('click', () => {
-    if (tratamientoSeleccionado) {
-        window.location.href = `crud.php?delete_id=${tratamientoSeleccionado.id}&tipo=tratamiento`;
-    }
-});
+if(eliminarTratamientoBtn) {
+    eliminarTratamientoBtn.addEventListener('click', () => {
+        if (tratamientoSeleccionado) {
+            if(confirm(`¿Estás seguro de eliminar este tratamiento?`)) {
+                window.location.href = `crud.php?delete_id=${tratamientoSeleccionado.id}&tipo=tratamiento`;
+            }
+        } else {
+            alert("Por favor, selecciona un tratamiento en la tabla para eliminar.");
+        }
+    });
+}
 
-// Seleccionar tratamiento en la tabla
-tratamientosTable.addEventListener('click', (event) => {
-    if (event.target.tagName === 'TD') {
-        const row = event.target.parentNode;
-        const cells = row.getElementsByTagName('TD');
-        tratamientoSeleccionado = {
-            id: cells[0].textContent,
-            cita_id: cells[1].textContent,
-            nombre: cells[5].textContent,
-            descripcion: cells[6].textContent
-        };
-    }
-});
+if(tratamientosTable) {
+    tratamientosTable.addEventListener('click', (event) => {
+        if (event.target.tagName === 'TD') {
+            const row = event.target.parentNode;
+            const filas = tratamientosTable.querySelectorAll('tbody tr');
+            filas.forEach(f => f.classList.remove('fila-seleccionada'));
+            row.classList.add('fila-seleccionada');
+
+            const cells = row.getElementsByTagName('TD');
+            tratamientoSeleccionado = {
+                id: cells[0].textContent.trim(),
+                cita_id: cells[1].textContent.trim(),
+                nombre: cells[5].textContent.trim(),
+                descripcion: cells[6].textContent.trim()
+            };
+        }
+    });
+}

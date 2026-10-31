@@ -1,149 +1,202 @@
-body {
+/* --- Importar Fuente Moderna --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f4f9f9;
     color: #333;
-    padding: 20px;
+    padding: 20px 50px; /* Margen para que no quede pegado a los bordes de la pantalla */
 }
 
-h1, h2 {
-    text-align: center;
-    color: #2d89ef;
-    margin-bottom: 10px;
+/* --- Barra de Usuario (User Bar) --- */
+.user-bar {
+    background: #ffffff;
+    padding: 12px 25px;
+    border-radius: 50px; /* Forma de píldora para la barra */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 40px;
+    font-weight: 500;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-    background-color: #fff;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+.user-bar form {
+    margin: 0;
+    padding: 0;
 }
 
-table th, table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
+/* --- Títulos de Sección --- */
+h2 {
+    color: #0077b6;
+    margin: 30px 0 15px 0;
+    border-bottom: 2px solid #e0f2f1;
+    padding-bottom: 10px;
 }
 
-table th {
-    background-color: #2d89ef;
-    color: white;
-}
-
+/* --- Diseño Premium General para Botones --- */
 button {
-    background-color: #2d89ef;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, #00B4D8 0%, #0096c7 100%);
     color: white;
     border: none;
-    padding: 10px 15px;
-    margin: 5px;
-    border-radius: 5px;
+    border-radius: 25px; /* Píldora */
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 180, 216, 0.3);
+    transition: all 0.3s ease;
+    margin-right: 8px;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
 }
 
 button:hover {
-    background-color: #1b66c2;
+    background: linear-gradient(135deg, #0096c7 0%, #0077b6 100%);
+    box-shadow: 0 6px 15px rgba(0, 180, 216, 0.4);
+    transform: translateY(-2px);
 }
 
-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    max-width: 500px;
-    margin: 0 auto;
+/* --- Botones Específicos: Eliminar, Cancelar y Cerrar Sesión (Color Rojo) --- */
+#eliminar-paciente, #eliminar-cita, #eliminar-tratamiento, 
+#cancelar-formulario-paciente, #cancelar-formulario-cita, #cancelar-formulario-tratamiento,
+.logout-button {
+    background: linear-gradient(135deg, #e63946 0%, #d62828 100%);
+    box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
+    margin-left: 15px;
+}
+
+#eliminar-paciente:hover, #eliminar-cita:hover, #eliminar-tratamiento:hover, 
+#cancelar-formulario-paciente:hover, #cancelar-formulario-cita:hover, #cancelar-formulario-tratamiento:hover,
+.logout-button:hover {
+    background: linear-gradient(135deg, #d62828 0%, #a71e1e 100%);
+    box-shadow: 0 6px 15px rgba(230, 57, 70, 0.4);
+}
+
+/* --- Botones Específicos: Agregar (Color Verde Esmeralda) --- */
+#agregar-paciente, #agregar-cita, #agregar-tratamiento {
+    background: linear-gradient(135deg, #2a9d8f 0%, #21867a 100%);
+    box-shadow: 0 4px 10px rgba(42, 157, 143, 0.3);
+}
+
+#agregar-paciente:hover, #agregar-cita:hover, #agregar-tratamiento:hover {
+    background: linear-gradient(135deg, #21867a 0%, #18635a 100%);
+    box-shadow: 0 6px 15px rgba(42, 157, 143, 0.45);
+}
+
+/* --- Diseño de las Tablas --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden; /* Oculta las esquinas cuadradas para mostrar el borde redondeado */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    border: none !important; /* Fuerza a ignorar el border="1" de tu HTML */
+    margin-bottom: 30px;
+}
+
+thead {
+    background: linear-gradient(135deg, #0077b6 0%, #0096c7 100%);
+    color: white;
+}
+
+th, td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+/* --- Animación y Selección de Filas en Tablas --- */
+tbody tr {
+    cursor: pointer; /* Cambia el cursor a una manita */
+    transition: all 0.3s ease; /* Animación suave */
+}
+
+/* Efecto al pasar el mouse (hover) */
+tbody tr:hover {
+    background-color: #f1f9fa;
+}
+
+/* Efecto cuando la fila está SELECCIONADA (por el JavaScript) */
+tbody tr.fila-seleccionada {
+    background-color: #e0f7fa !important; /* Fondo azul/celeste claro */
+    transform: scale(1.01); /* Hace que la fila resalte un poquito hacia adelante */
+    box-shadow: 0 4px 10px rgba(0, 180, 216, 0.2); /* Sombra azulada */
+    border-left: 5px solid #00B4D8; /* Borde grueso a la izquierda para destacar */
+}
+
+/* Evitar que el borde mueva el texto bruscamente */
+tbody td {
+    transition: padding 0.3s ease;
+}
+
+/* --- Formularios Desplegables (Agregar/Editar) --- */
+div[id^="formulario-"] {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    max-width: 700px;
+    margin: 20px auto 40px auto; /* Centra el formulario en la pantalla */
 }
 
 form label {
     display: block;
-    margin-bottom: 10px;
-}
-
-form input, form select, form textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 4px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-form button {
-    width: 100%;
+    font-weight: 500;
+    color: #555;
     margin-top: 15px;
+    margin-bottom: 8px;
+    font-size: 14px;
 }
 
-#pacientes-table, #citas-table, #tratamientos-table {
-    margin-top: 10px;
+form input[type="text"], 
+form input[type="email"], 
+form input[type="date"], 
+form input[type="time"], 
+form select, 
+form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    font-size: 14px;
+    color: #333;
+    transition: all 0.3s ease;
 }
 
-.user-bar {
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    padding: 10px; 
-    background-color: #f0f0f0; 
-    border-bottom: 1px solid #ddd; 
+form textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
-.user-bar span {
-    flex-grow: 1; 
+form input:focus, form select:focus, form textarea:focus {
+    border-color: #00B4D8;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.15);
 }
 
-.logout-button {
-    margin: 0; 
-    padding: 8px 12px; 
+/* Botones dentro del formulario */
+form button[type="submit"] {
+    margin-top: 25px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-
-    table thead tr {
-        display: none;
-    }
-
-    table td {
-        position: relative;
-        padding-left: 50%;
-        border: none;
-        border-bottom: 1px solid #ddd;
-    }
-
-    table td::before {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        font-weight: bold;
-        color: #555;
-    }
-
-    #pacientes-table td:nth-of-type(1)::before { content: "ID"; }
-    #pacientes-table td:nth-of-type(2)::before { content: "Nombre"; }
-    #pacientes-table td:nth-of-type(3)::before { content: "Apellido"; }
-    #pacientes-table td:nth-of-type(4)::before { content: "Teléfono"; }
-    #pacientes-table td:nth-of-type(5)::before { content: "Correo"; }
-    #pacientes-table td:nth-of-type(6)::before { content: "Fecha de Nacimiento"; }
-    #pacientes-table td:nth-of-type(7)::before { content: "Creado En"; }
-
-    #citas-table td:nth-of-type(1)::before { content: "ID"; }
-    #citas-table td:nth-of-type(2)::before { content: "Paciente"; }
-    #citas-table td:nth-of-type(3)::before { content: "Fecha"; }
-    #citas-table td:nth-of-type(4)::before { content: "Hora"; }
-    #citas-table td:nth-of-type(5)::before { content: "Motivo"; }
-    #citas-table td:nth-of-type(6)::before { content: "Estado"; }
-
-    #tratamientos-table td:nth-of-type(1)::before { content: "ID"; }
-    #tratamientos-table td:nth-of-type(2)::before { content: "Cita ID"; }
-    #tratamientos-table td:nth-of-type(3)::before { content: "Paciente"; }
-    #tratamientos-table td:nth-of-type(4)::before { content: "Fecha Cita"; }
-    #tratamientos-table td:nth-of-type(5)::before { content: "Hora Cita"; }
-    #tratamientos-table td:nth-of-type(6)::before { content: "Tratamiento"; }
-    #tratamientos-table td:nth-of-type(7)::before { content: "Descripción"; }
-}
+.tratamiento-completado::after {
+            content: ' (Completada)';
+            color: #2a9d8f;
+            font-weight: bold;
+            font-size: 0.85em;
+            background-color: #e8f5f3;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
